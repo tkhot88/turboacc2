@@ -39,6 +39,7 @@ make menuconfig
 
  感谢以下项目：
 
++ [openwrt/openwrt](https://github.com/openwrt/openwrt)
 + [coolsnowwolf/lede](https://github.com/coolsnowwolf/lede)
 + [coolsnowwolf/luci](https://github.com/coolsnowwolf/luci)
 + [chenmozhijin/turboacc](https://github.com/chenmozhijin/turboacc)

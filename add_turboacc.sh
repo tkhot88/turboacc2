@@ -16,7 +16,7 @@ if [ -z "$kernel_versions" ]; then
 fi
 echo "kernel version: $kernel_versions"
 
-git clone --depth=1 --single-branch https://github.com/mufeng05/turboacc "$TMPDIR/turboacc" || exit 1
+git clone --depth=1 --single-branch https://github.com/tkhot88/turboacc2 "$TMPDIR/turboacc" || exit 1
 
 mkdir -p "./package/turboacc"
 mkdir -p "./package/network/config/firewall/patches"

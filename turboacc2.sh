@@ -9,29 +9,23 @@ if ! [ -d "./package" ]; then
     exit 1
 fi
 
-# ------------------------------
-# kernel_versions 检测逻辑（融合版）
-# ------------------------------
-kernel_versions="$(find "./include" -maxdepth 1 -type d | sed -n '/kernel-[0-9]/p' | sed -e "s@.*/kernel-@@" | tr '\n' ' ')"
 
+
+
+kernel_versions="$(find "./include" | sed -n '/kernel-[0-9]/p' | sed -e "s@./include/kernel-@@" | sed ':a;N;$!ba;s/\n/ /g')"
 if [ -z "$kernel_versions" ]; then
-    kernel_versions="$(find "./target/linux/generic" -maxdepth 1 -type d | sed -n '/kernel-[0-9]/p' | sed -e "s@.*/kernel-@@" | tr '\n' ' ')"
+    kernel_versions="$(find "./target/linux/generic" | sed -n '/kernel-[0-9]/p' | sed -e "s@./target/linux/generic/kernel-@@" | sed ':a;N;$!ba;s/\n/ /g')"
 fi
-
 if [ -z "$kernel_versions" ]; then
-    # 新增通用 target/linux 查找，兼容 x86
-    kernel_versions="$(find "./target/linux" -maxdepth 1 -type d | sed -n '/kernel-[0-9]/p' | sed -e "s@.*/kernel-@@" | tr '\n' ' ')"
+    echo "Error: Unable to get kernel version, script exited"
+    exit 1
 fi
+echo "kernel version: $kernel_versions"
 
-if [ -z "$kernel_versions" ]; then
-    echo "Warning: Unable to get kernel version, likely x86 or unsupported target. Skipping turboacc."
-    kernel_versions=""
-fi
 
-echo "kernel version: ${kernel_versions:-none}"
-# ------------------------------
-# end kernel_versions 检测
-# ------------------------------
+
+
+
 
 git clone --depth=1 --single-branch https://github.com/tkhot88/turboacc2 "$TMPDIR/turboacc" || exit 1
 
@@ -46,9 +40,6 @@ echo "Copying lede turboacc files..."
 
 for kernel_version in $kernel_versions; do
     if [ "$kernel_version" = "6.12" ] || [ "$kernel_version" = "6.6" ]; then
-        mkdir -p "./target/linux/generic/hack-$kernel_version"
-        mkdir -p "./target/linux/generic/pending-$kernel_version"
-
         cp -f "$TMPDIR/turboacc/lede/hack-$kernel_version/952-add-net-conntrack-events-support-multiple-registrant.patch" "./target/linux/generic/hack-$kernel_version"
         cp -f "$TMPDIR/turboacc/lede/hack-$kernel_version/953-net-patch-linux-kernel-to-support-shortcut-fe.patch" "./target/linux/generic/hack-$kernel_version"
         cp -f "$TMPDIR/turboacc/lede/hack-$kernel_version/982-add-bcm-fullconenat-support.patch" "./target/linux/generic/hack-$kernel_version"

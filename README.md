@@ -10,7 +10,7 @@
 + 在openwrt源代码所在目录执行：
 
     ```bash
-    curl -sSL https://raw.githubusercontent.com/mufeng05/turboacc/main/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
+    curl -sSL https://raw.githubusercontent.com/tkhot88/turboacc2/main/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
     ```
 
 + 之后执行
